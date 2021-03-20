@@ -1,0 +1,107 @@
+body {
+  font-family: 'Andika New Basic', Helvetica, Arial, sans-serif;
+  color: #333;
+  background-color: #f2f2f2;
+  font-size: 1em;
+  border-top: solid 10px #5881d8;
+}
+
+a {
+  text-decoration: none;
+  color: #5881d8;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #90B4FE;
+}
+
+.container {
+  max-width: 1000px;
+  min-height: calc(100vh - 100px);
+}
+
+[role="banner"] {
+  margin-top: 1em;
+  padding-bottom: 1.5em;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  align-self: center;
+}
+
+.tagline {
+  font-size: 4.4vw;
+  align-self: center;
+}
+
+[role="banner"] .tagline {
+  margin-top: 1em;
+}
+
+.post {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.post-header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.post-title {
+  color: #5881d8;
+}
+
+.author-post {
+  list-style: none;
+}
+
+footer {
+  font-size: 1em;
+  text-align: center;
+  color: #fff;
+  background-color: #5881d8;
+  bottom: 0;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 90px;
+}
+
+footer a {
+  text-decoration: none;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  [role="banner"] {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    padding-bottom: 1.5em;
+  }
+
+  .logo {
+    width: 200px;
+    height: 200px;
+    margin: .25em 6em 0 0;
+  }
+
+  .tagline {
+    font-size: 2em;
+    clear: both;
+  }
+
+  [role="banner"] .tagline {
+    flex: 1;
+    margin-top: 1em;
+  }
+}
