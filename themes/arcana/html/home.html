@@ -1,0 +1,19 @@
+{% extends "/html/base.html" %}
+{% block content %}
+<div id="home">
+  <header role="banner">
+    <img class="logo" src="img/clojure_logo.svg" />
+    <h2 class="tagline"><strong>Clojure Arcana</strong> is a journal exploring the mysteries and delights of Clojure.
+    </h2>
+  </header>
+  <div id="home-post">
+    <div class="home-post-header">
+      <em>Recently...</em>
+      <h2><a href="{{post.uri}}">{{post.title}}</a></h2>
+      <div>
+	{{post.description|safe}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

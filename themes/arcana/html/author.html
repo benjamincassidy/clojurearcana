@@ -1,0 +1,25 @@
+{% extends "/html/base.html" %}
+{%block subtitle %}: Posts by {{author}} {% endblock %}
+{% block content %}
+<header role="banner">
+  <img class="logo" src="../img/clojure_logo.svg" />
+</header>
+<div id="posts">
+  <div id="page-header" class="post-header">
+    <h2>{{author}}</h2>
+  </div>
+  <ul>
+    {% for group in groups %}
+    {% for post in group.posts %}
+    <li class="author-post">
+      <div>
+	<h2><a href="{{post.uri}}">{{post.title}}</a></h2>
+	<p>{{post.date|date:longDate}}</p>
+	<p>{{post.content|safe}}</p>
+      </div>
+    </li>
+    {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
