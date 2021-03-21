@@ -18,7 +18,8 @@ a:hover {
 
 .container {
   max-width: 1000px;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 260px);
+  padding-bottom: 96px;
 }
 
 [role="banner"] {
@@ -66,13 +67,14 @@ a:hover {
 footer {
   font-size: 1em;
   text-align: center;
-  color: #fff;
   background-color: #5881d8;
-  bottom: 0;
+  color: #fff;
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  height: 90px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
 }
 
 footer a {
