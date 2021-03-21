@@ -1,7 +1,7 @@
 {:site-title                   "Clojure Arcana"
  :author                       ""
  :description                  "An exploration of Clojure arcana."
- :site-url                     "https://cannyclojure.com/"
+ :site-url                     "https://clojurearcana.com/"
  :post-root                    "posts"
  :page-root                    "pages"
  :post-root-uri                "/"

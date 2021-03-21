@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url>
 <loc>
-https://cannyclojure.com/index.html
+https://clojurearcana.com/index.html
 </loc>
 <lastmod>
 2021-03-21
@@ -10,7 +10,7 @@ https://cannyclojure.com/index.html
 </url>
 <url>
 <loc>
-https://cannyclojure.com/authors/cassidy/index.html
+https://clojurearcana.com/authors/cassidy/index.html
 </loc>
 <lastmod>
 2021-03-21
@@ -18,7 +18,7 @@ https://cannyclojure.com/authors/cassidy/index.html
 </url>
 <url>
 <loc>
-https://cannyclojure.com/404.html
+https://clojurearcana.com/404.html
 </loc>
 <lastmod>
 2021-03-21
@@ -26,7 +26,7 @@ https://cannyclojure.com/404.html
 </url>
 <url>
 <loc>
-https://cannyclojure.com/archives/index.html
+https://clojurearcana.com/archives/index.html
 </loc>
 <lastmod>
 2021-03-21
@@ -34,7 +34,7 @@ https://cannyclojure.com/archives/index.html
 </url>
 <url>
 <loc>
-https://cannyclojure.com/tags/index.html
+https://clojurearcana.com/tags/index.html
 </loc>
 <lastmod>
 2021-03-21
@@ -42,7 +42,7 @@ https://cannyclojure.com/tags/index.html
 </url>
 <url>
 <loc>
-https://cannyclojure.com/fun-with-strings/index.html
+https://clojurearcana.com/fun-with-strings/index.html
 </loc>
 <lastmod>
 2021-03-21
