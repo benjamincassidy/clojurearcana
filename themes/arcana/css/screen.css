@@ -18,7 +18,7 @@ a:hover {
 
 .container {
   max-width: 1000px;
-  min-height: calc(100vh - 310px);
+  min-height: calc(100vh - 330px);
   padding-bottom: 96px;
 }
 
@@ -86,7 +86,7 @@ footer {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  height: 310px;
+  height: 380px;
   display: flex;
   flex-direction: column;
 }
@@ -119,5 +119,9 @@ footer a {
   [role="banner"] .tagline {
     flex: 1;
     margin-top: 1em;
+  }
+
+  footer {
+    height: 320px;
   }
 }
