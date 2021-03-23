@@ -18,7 +18,7 @@ a:hover {
 
 .container {
   max-width: 1000px;
-  min-height: calc(100vh - 260px);
+  min-height: calc(100vh - 310px);
   padding-bottom: 96px;
 }
 
@@ -64,6 +64,20 @@ a:hover {
   list-style: none;
 }
 
+.socialIcons {
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.socialIcons img {
+  height: 48px;
+  width: 48px;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
 footer {
   font-size: 1em;
   text-align: center;
@@ -72,7 +86,7 @@ footer {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  height: 250px;
+  height: 310px;
   display: flex;
   flex-direction: column;
 }

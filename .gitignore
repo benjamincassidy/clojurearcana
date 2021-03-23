@@ -8,3 +8,4 @@
 .lein-plugins/
 .lein-failures
 .cpcache/
+.DS_Store
