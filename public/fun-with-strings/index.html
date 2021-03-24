@@ -19,7 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/solarized-dark.min.css" integrity="sha512-H+WY7zsI0kQwkbYE+yp/9vg/UzpiyuKERzpxOaGwKCc7iFoNpi0h3mQ4GpZMO9lDaVzc1xjD3e6g/UMuUlOicg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/solarized-dark.min.css" crossorigin="anonymous" />
     <link href="/css/screen.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
@@ -45,22 +46,24 @@
     </div>
   </div>
   <div>
-    <h1 id="introduction">Introduction</h1><p>Any program of significance, especially those that deal with outside input, has to deal with strings. Java provides an ample set of utilities and methods for handling strings, but the clojure.string namespace provides utilities for string manipulation in a more idiomatic way. Here we'll explore some of these core functions and how to use them and then we'll look at advanced string handling and some interesting problems with strings.</p><h1 id="core-functions">Core functions</h1><p>The core string library has all the functionality you've come to expect from string handling features in core libraries in other languages. You can, of course, trim whitespace <code>(trim s)</code>, <code>(triml s)</code>, and <code>(trimr s)</code>. You can determine if a substring exists <code>(includes? s sub)</code>, <code>(starts-with? s sub)</code>, and <code>(ends-with? s sub)</code>. Capitalize <code>(capitalize s)</code> and lowercase <code>(lower-case s)</code> a string. And replace <code>(replace s match replacement)</code>, <code>(replace-first s match replacement)</code>. Nothing here is new, nor specific to Clojure. But the way that Clojure treats strings can lead to some interesting solutions to common problems.</p><h1 id="counting-strings-with-duplicate-characters">Counting strings with duplicate characters</h1><p>Let us say that we have a list of names and we want to determine if any names have duplicate characters. Well Clojure strings are in fact sequences and any function that works on a sequence works on a string.</p><pre><code class="clojure-repl">user&gt; (first "string")
+    <p>Any program of significance, especially those that deal with outside input, has to deal with strings. Java provides an ample set of utilities and methods for handling strings, but the clojure.string namespace provides utilities for string manipulation in a more idiomatic way. Here we'll explore some of these core functions and how to use them and then we'll look at advanced string handling and some interesting problems with strings.</p><h1 id="core-functions">Core functions</h1><p>The core string library has all the functionality you've come to expect from string handling features in core libraries in other languages. You can, of course, trim whitespace <code>(trim s)</code>, <code>(triml s)</code>, and <code>(trimr s)</code>. You can determine if a substring exists <code>(includes? s sub)</code>, <code>(starts-with? s sub)</code>, and <code>(ends-with? s sub)</code>. Capitalize <code>(capitalize s)</code> and lowercase <code>(lower-case s)</code> a string. And replace <code>(replace s match replacement)</code>, <code>(replace-first s match replacement)</code>. Nothing here is new, nor specific to Clojure. But the way that Clojure treats strings can lead to some interesting solutions to common problems.</p><h1 id="counting-strings-with-duplicate-characters">Counting strings with duplicate characters</h1><p>Let us say that we have a list of names and we want to determine if any names have duplicate characters. Well Clojure strings are in fact sequences and any function that works on a sequence works on a string.</p><pre><code class="clojure-repl">user&gt; (first "string")
 \s
 user&gt; (last "string")
 \g
 user&gt; (rest "string")
 (\t \r \i \n \g)
-</code></pre><p>So now we have a sequence of characters. How would we go about determining if there were any duplicates in this string?</p><pre><code class="clojure">(as-&gt; "some string" s
-      (frequencies s)
-      (filter #(&gt; (second %) 1) s)
-      (not (empty? s))) =&gt; true
+</code></pre><p>So now we have a sequence of characters. How would we go about determining if there were any duplicates in this string?</p><pre><code class="clojure">(-&gt;&gt; "some string"
+     (frequencies)
+     (filter #(&gt; (second %) 1))
+     (empty?)
+     (not)) =&gt; true
 </code></pre><p>Cool. This code works to determine if there are duplicate letters in a given string. But our original problem asked us to determine which strings in a list of strings have duplicate characters. So lets take this list:</p><pre><code class="clojure">("apple" "pear" "orange" "strawberry" "tomato")
 </code></pre><p>What we want back is:</p><pre><code class="clojure">("apple" "strawberry" "tomato")
-</code></pre><p>Which is as simple as using our code above as a filter:</p><pre><code class="clojure">(filter (fn [x] (as-&gt; (seq x) s
-                      (frequencies s)
-                      (filter #(&gt; (second %) 1) s)
-                      (not (empty? s))))
+</code></pre><p>Which is as simple as using our code above as a filter:</p><pre><code class="clojure">(filter (fn [x] (-&gt;&gt; x
+                     (frequencies)
+                     (filter #(&gt; (second %) 1))
+                     (empty?)
+                     (not)))
         '("apple" "pear" "orange" "strawberry" "tomato"))
 </code></pre><h1 id="conclusion">Conclusion</h1><p>What we've seen here is just one simple consequence of being able to treat strings as sequences. There are further implications which we will explore in future articles.</p><p>Ciao for now!</p>
   </div>
@@ -86,9 +89,9 @@ user&gt; (rest "string")
       <div>Icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </footer>
     <script data-goatcounter="https://clojurearcana.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/clojure.min.js" integrity="sha512-IiU/pbZybv38zRvmcR87H1VeBd5sQ93GBZhxNxir3juLBwciRRha1dJc5Rt+gAt7R0zfelApclH5HVMhwX/dpA==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/clojure-repl.min.js" integrity="sha512-taQQxY/m0KJP+F6TKZ39z2UyU4KCcStsUYaMVUESMOJShRUDh/5oEynHC/2IfWyDe3qPzfNAxQJndkVxZXKIWA==" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/languages/clojure.min.js" integrity="sha512-IiU/pbZybv38zRvmcR87H1VeBd5sQ93GBZhxNxir3juLBwciRRha1dJc5Rt+gAt7R0zfelApclH5HVMhwX/dpA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/languages/clojure-repl.min.js" integrity="sha512-taQQxY/m0KJP+F6TKZ39z2UyU4KCcStsUYaMVUESMOJShRUDh/5oEynHC/2IfWyDe3qPzfNAxQJndkVxZXKIWA==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>

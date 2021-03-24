@@ -3,8 +3,6 @@
  :description "Clojure provides excellent utilities for dealing with strings. Strings are also sequences and can be treated and processed as such. In this article we'll explore a fun way to solve a common problem using sequence functions on strings."
  :date "2021-03-21"}
  
-# Introduction
-
 Any program of significance, especially those that deal with outside input, has to deal with strings. Java provides an ample set of utilities and methods for handling strings, but the clojure.string namespace provides utilities for string manipulation in a more idiomatic way. Here we'll explore some of these core functions and how to use them and then we'll look at advanced string handling and some interesting problems with strings.
 
 # Core functions
@@ -27,10 +25,11 @@ user> (rest "string")
 So now we have a sequence of characters. How would we go about determining if there were any duplicates in this string?
 
 ```clojure
-(as-> "some string" s
-      (frequencies s)
-      (filter #(> (second %) 1) s)
-      (not (empty? s))) => true
+(->> "some string"
+     (frequencies)
+     (filter #(> (second %) 1))
+     (empty?)
+     (not)) => true
 ```
 
 Cool. This code works to determine if there are duplicate letters in a given string. But our original problem asked us to determine which strings in a list of strings have duplicate characters. So lets take this list:
@@ -48,10 +47,11 @@ What we want back is:
 Which is as simple as using our code above as a filter:
 
 ```clojure
-(filter (fn [x] (as-> (seq x) s
-                      (frequencies s)
-                      (filter #(> (second %) 1) s)
-                      (not (empty? s))))
+(filter (fn [x] (->> x
+                     (frequencies)
+                     (filter #(> (second %) 1))
+                     (empty?)
+                     (not)))
         '("apple" "pear" "orange" "strawberry" "tomato"))
 ```
 

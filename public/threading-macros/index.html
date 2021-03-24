@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Clojure Arcana</title>
+    
+<meta name="keywords" content="">
+
+<meta name="description" content="Threading macros are one of the most useful features of the Clojure core library. Similar to a fluent API in object-oriented programming languages, these macros are both more powerful and more flexible.">
+
+<meta property="og:description" content="Threading macros are one of the most useful features of the Clojure core library. Similar to a fluent API in object-oriented programming languages, these macros are both more powerful and more flexible.">
+
+<meta property="og:url" content="https://clojurearcana.com/threading-macros/" />
+<meta property="og:title" content="Threading macros" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://clojurearcana.com/threading-macros/">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Andika+New+Basic:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/styles/solarized-dark.min.css" crossorigin="anonymous" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+	<div class="col-lg-12">
+	  <div id="content">
+	    
+<header role="banner">
+  <a href="/"><img class="logo" src="../img/clojure_logo.svg" /></a>
+  <h2 class="tagline"><strong>Clojure Arcana</strong> is a journal exploring the mysteries and delights of Clojure.
+  </h2>
+</header>
+<div id="post">
+  <div class="post-header">
+    <h2 class="post-title">Threading macros</h2>
+    <div id="post-meta" class="row">
+      <div class="col-lg-12">March 24, 2021</div>
+      
+      <span class="col-lg-12 right"><em>Written by:</em> <a href="/authors/cassidy">cassidy</a></span>
+      
+    </div>
+  </div>
+  <div>
+    <p>When a new developer comes to Clojure from an imperative or object-oriented programming language, we often attempt to program imperatively using Clojure instead of learning to program the Clojure way. This makes sense, of course, and often the newcomer will struggle for some time to grok functional programming style and the Clojure way in particular. Typically this manifests in strange constructs like nested <code>let</code> blocks or passing of values through the <code>let</code> bindings themselves. For example a neophyte might devise something like this:</p><pre><code class="clojure">(let [a 7]
+  (let [b (do-something a)]
+    (let [c (something-else b)]
+  (compute-final-value c))))
+</code></pre><p>or slightly less bad:</p><pre><code class="clojure">(let [a 7
+      b (do-something a)
+      c (something-else b)]
+  (compute-final-value c))
+</code></pre><p>Imperative programming conditions us to think like this, and Clojure is an expressive enough language that it permits us to abuse it in such a manner. Nevertheless, if you spend any amount of time reading Clojure code you'll come across the threading macros: <code>-&gt;</code>, <code>-&gt;&gt;</code>, <code>as-&gt;</code>, <code>cond-&gt;</code>, and so on. These macros support a functional style of programming in a syntactically elegant way.</p><h1 id="thread-first--">Thread first <code>-&gt;</code></h1><p>The thread first macro takes the result of one function and "threads" it as the first argument to the next. This is handy when one needs to chain a set of function calls and doesn't want to deal with the cognitive load of nesting those calls inside one another.</p><pre><code class="clojure">(- (* (/ 10 2) 4) 3) =&gt; 17
+</code></pre><p>can be rewritten using a threading macro as:</p><pre><code class="clojure">(-&gt; (/ 10 2)
+    (* 4)
+    (- 3)) ;; =&gt; 17
+</code></pre><p>It's much clearer to reason about what is happening in this code and easier to make changes; all the while this code follows good functional style.</p><h1 id="thread-last--">Thread last <code>-&gt;&gt;</code></h1><p>The thread last does the same thing as the thread first macro except that it "threads" the result of one function into the next as the last argument.</p><p>Thus this:</p><pre><code class="clojure">(- 3 (* 4 (/ 10 2))) ;; =&gt; -17
+</code></pre><p>becomes this:</p><pre><code class="clojure">(-&gt;&gt; (/ 10 2)
+     (* 4)
+     (- 3)) ;; =&gt; -17
+</code></pre><h1 id="thread-as-as-">Thread as <code>as-&gt;</code></h1><p>But reality is that not all functions will be chained in such a way that the threading needs to happen in the first or the last position. There will be times you may even want to thread into the second of 3 arguments. That's where the <code>as-&gt;</code> macro comes in. It takes two fixed arguments, the value to thread and a binding symbol which is the placeholder determing where the threading happens. It's difficult to come up with an example for this using only the functions in clojure.core because they're well planned out, functions which work on similar data structures expect that data structure in the same position. Nevertheless, when using libraries or during Java interop situations will arise wherein you'll want to chain function calls, but the argument position will change. So let's say you've parsed some JSON user input and you neeed to sanitize the input before inserting it into a database:</p><pre><code class="clojure">(as-&gt; {:colors ["Blue" "Orange" "Green"]} m
+      (get m :colors)
+      (map clojure.string/lower-case m)
+      (vec m))
+</code></pre><p>What's going on here? Well first the map with the key <code>:colors</code> is being bound to the symbol <code>m</code>, then it is passed to the <code>get</code> function in the first position. The output of that is bound to <code>m</code> before it is passed in to <code>map</code> in last position.</p><h1 id="some--and-some-"><code>some-&gt;</code> and <code>some-&gt;&gt;</code></h1><p>What if we want to short-circuit and not evaluate a function if the preceding function returns <code>nil</code>. Well that's where <code>some-&gt;</code> and <code>some-&gt;&gt;</code> come in. They work the same as <code>-&gt;</code> and <code>-&gt;&gt;</code> respectively, but if any function in the pipeline returns <code>nil</code> then the entire expression will evaluate to <code>nil</code> instead of the next function throwing an exception. Let's look at our previous example, if the key <code>:colors</code> isn't in the map it will return <code>nil</code>.</p><pre><code class="clojure">(some-&gt; {}
+        (get :colors)
+        (vec))
+</code></pre><p>This will evaluate to <code>nil</code> instead of <code>[]</code>.</p><h1 id="cond--and-cond-"><code>cond-&gt;</code> and <code>cond-&gt;&gt;</code></h1><p>The final threading macro is the <code>cond-&gt;</code> macro which is useful for situations where one may want to guard against the evaluation of one of the expressions in the pipeline under certain circumstances, but continue evaluation of the rest. For each pair of forms, if the expression on the left evaluates to true, then the return value of the last expression evaluated will be threaded as the first argument to the expressino on the right.</p><pre><code class="clojure">(defn simple-type [x]
+  (cond-&gt; nil
+    (integer? x) (str "integer")
+    (string? x) (str "string")
+    (boolean? x) (str "boolean")
+    (seqable? x) (str " seqable")))
+
+(simple-type "hello") ;; =&gt; "string seqable"
+</code></pre><h1 id="whew">whew!</h1><p>Well that's it for the threading macros. As you become comfortable using them, your code will become cleaner, easier to read, and more idiomatic Clojure.</p><p>Ciao for now!</p>
+  </div>
+</div>
+
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <footer role="contentinfo">
+      <div>
+      <strong>Clojure Arcana</strong> is released under a <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="license">Creative Commons BY-NC License</a>
+      <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+      </div>
+      <form style="padding:3px;text-align:center;" action="https://tinyletter.com/clojurearcana" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/clojurearcana', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true"><p><label for="tlemail">Get Clojure Arcana in your inbox!</label></p><p><input type="text" style="width:140px" name="email" id="tlemail" /></p><input type="hidden" value="1" name="embed"/><input type="submit" value="Subscribe" /><p><a href="https://tinyletter.com" target="_blank">powered by TinyLetter</a></p></form>
+
+      <div class="socialIcons">
+	<a href="/feed.xml"><img src="/img/rss.svg" alt="RSS Feed"></a>
+	<a href="https://twitter.com/clojurearcana"><img src="/img/twitter.svg" alt="Clojure Arcana twitter"></a>
+      </div>
+
+      <div>Icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    </footer>
+    <script data-goatcounter="https://clojurearcana.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/languages/clojure.min.js" integrity="sha512-IiU/pbZybv38zRvmcR87H1VeBd5sQ93GBZhxNxir3juLBwciRRha1dJc5Rt+gAt7R0zfelApclH5HVMhwX/dpA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.1/languages/clojure-repl.min.js" integrity="sha512-taQQxY/m0KJP+F6TKZ39z2UyU4KCcStsUYaMVUESMOJShRUDh/5oEynHC/2IfWyDe3qPzfNAxQJndkVxZXKIWA==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
