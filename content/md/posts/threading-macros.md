@@ -3,7 +3,7 @@
  :description "Threading macros are one of the most useful features of the Clojure core library. Similar to a fluent API in object-oriented programming languages, these macros are both more powerful and more flexible."
  :author "cassidy"}
  
-When a new developer comes to Clojure from an imperative or object-oriented programming language, we often attempt to program imperatively using Clojure instead of learning to program the Clojure way. This makes sense, of course, and often the newcomer will struggle for some time to grok functional programming style and the Clojure way in particular. Typically this manifests in strange constructs like nested `let` blocks or passing of values through the `let` bindings themselves. For example a neophyte might devise something like this:
+When a new developer comes to Clojure from an imperative or object-oriented programming language, we often attempt to program imperatively using Clojure instead of learning to program the Clojure way. This makes sense, of course, and often the newcomer will struggle for some time to grok functional programming style and the Clojure way in particular. Typically this manifests in strange constructs like nested `let` blocks or passing of values through the `let` bindings themselves. For example, a neophyte might devise something like this:
 
 ```clojure
 (let [a 7]
@@ -61,7 +61,7 @@ becomes this:
 
 # Thread as `as->`
 
-But reality is that not all functions will be chained in such a way that the threading needs to happen in the first or the last position. There will be times you may even want to thread into the second of 3 arguments. That's where the `as->` macro comes in. It takes two fixed arguments, the value to thread and a binding symbol which is the placeholder determing where the threading happens. It's difficult to come up with an example for this using only the functions in clojure.core because they're well planned out, functions which work on similar data structures expect that data structure in the same position. Nevertheless, when using libraries or during Java interop situations will arise wherein you'll want to chain function calls, but the argument position will change. So let's say you've parsed some JSON user input and you neeed to sanitize the input before inserting it into a database:
+But reality is that not all functions will be chained in such a way that the threading needs to happen in the first or the last position. There will be times you may even want to thread into the second of 3 arguments. That's where the `as->` macro comes in. It takes two fixed arguments, the value to thread and a binding symbol which is the placeholder determing where the threading happens. It's difficult to come up with an example for this using only the functions in clojure.core because they're well planned out, functions which work on similar data structures expect that data structure in the same position. Nevertheless, when using libraries or during Java interop situations will arise wherein you'll want to chain function calls, but the argument position will change. So let's say you've parsed some JSON user input and you need to sanitize the input before inserting it into a database:
 
 ```clojure
 (as-> {:colors ["Blue" "Orange" "Green"]} m
@@ -86,7 +86,7 @@ This will evaluate to `nil` instead of `[]`.
 
 # `cond->` and `cond->>`
 
-The final threading macro is the `cond->` macro which is useful for situations where one may want to guard against the evaluation of one of the expressions in the pipeline under certain circumstances, but continue evaluation of the rest. For each pair of forms, if the expression on the left evaluates to true, then the return value of the last expression evaluated will be threaded as the first argument to the expressino on the right.
+The final threading macro is the `cond->` macro which is useful for situations where one may want to guard against the evaluation of one of the expressions in the pipeline under certain circumstances, but continue evaluation of the rest. For each pair of forms, if the expression on the left evaluates to true, then the return value of the last expression evaluated will be threaded as the first argument to the expression on the right.
 
 ```clojure
 (defn simple-type [x]
