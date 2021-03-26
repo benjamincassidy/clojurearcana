@@ -1,7 +1,8 @@
 {:title "Fun with strings"
  :author "cassidy"
  :description "Clojure provides excellent utilities for dealing with strings. Strings are also sequences and can be treated and processed as such. In this article we'll explore a fun way to solve a common problem using sequence functions on strings."
- :date "2021-03-21"}
+ :date "2021-03-21"
+ :tags ["clojure" "strings" "clojure.core"]}
  
 Any program of significance, especially those that deal with outside input, has to deal with strings. Java provides an ample set of utilities and methods for handling strings, but the clojure.string namespace provides utilities for string manipulation in a more idiomatic way. Here we'll explore some of these core functions and how to use them and then we'll look at advanced string handling and some interesting problems with strings.
 

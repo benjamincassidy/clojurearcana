@@ -78,6 +78,14 @@ a:hover {
   margin-right: 6px;
 }
 
+.archive {
+  margin-top: 72px;
+}
+
+.archive li {
+  list-style-type: circle;
+}
+
 footer {
   font-size: 1em;
   text-align: center;

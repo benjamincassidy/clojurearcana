@@ -1,7 +1,8 @@
 {:title "Threading macros"
  :date "2021-03-24"
  :description "Threading macros are one of the most useful features of the Clojure core library. Similar to a fluent API in object-oriented programming languages, these macros are both more powerful and more flexible."
- :author "cassidy"}
+ :author "cassidy"
+ :tags ["clojure" "clojure.core" "macros" "macro"]}
  
 When a new developer comes to Clojure from an imperative or object-oriented programming language, we often attempt to program imperatively using Clojure instead of learning to program the Clojure way. This makes sense, of course, and often the newcomer will struggle for some time to grok functional programming style and the Clojure way in particular. Typically this manifests in strange constructs like nested `let` blocks or passing of values through the `let` bindings themselves. For example, a neophyte might devise something like this:
 
